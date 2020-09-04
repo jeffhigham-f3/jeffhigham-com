@@ -5,6 +5,7 @@ import 'package:animate_do/animate_do.dart';
 
 class ProfileAvatar extends StatelessWidget {
   final String imageUrl;
+  final String imageName;
   final bool isActive;
   final bool hasBorder;
   final double radius; // 20.0
@@ -14,7 +15,8 @@ class ProfileAvatar extends StatelessWidget {
 
   const ProfileAvatar({
     Key key,
-    @required this.imageUrl,
+    this.imageUrl,
+    this.imageName,
     @required this.radius,
     @required this.backgroundColor,
     @required this.borderColor,
@@ -30,11 +32,17 @@ class ProfileAvatar extends StatelessWidget {
         CircleAvatar(
           radius: radius,
           backgroundColor: borderColor,
-          child: imageUrl != null
+          child: (imageUrl != null || imageName != null)
               ? CircleAvatar(
                   radius: hasBorder ? radius - 3 : radius,
                   backgroundColor: backgroundColor,
-                  backgroundImage: CachedNetworkImageProvider(imageUrl),
+                  backgroundImage: (imageUrl != null)
+                      ? CachedNetworkImageProvider(
+                          imageUrl,
+                        )
+                      : AssetImage(
+                          imageName,
+                        ),
                 )
               : Text(
                   this.initials,
